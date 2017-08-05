@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>幕喵推荐</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../js/lib/fontSize.js"></script>
+</head>
+<body>
+<div id="app">
+    <!-- 头部固定 -->
+    <div class="header">
+        <div class="movie-title">
+            <span>幕喵推荐</span>
+        </div>
+    </div>
+
+    <!-- banner -->
+    <div class="ori-title movie-recom">- 电影 -</div>
+    <!-- 电影海报 -->
+    <div class="banner recom-banner">
+        <img src="../img/recom-poster.png" class="banner-poster">
+    </div>
+    <div class="deliveryDate">2017年5月19日上映</div>
+
+
+    <!-- 电影原声 -->
+    <div class="ori-movie clearfix">
+        <!-- 原声音乐 -->
+        <div class="ori-music">
+            <!-- 胶片背景 -->
+            <div class="film-bg"></div>
+            <div class="movie-music">
+                <div class="ori-title">- 电影原声 -</div>
+                <div class="music-info">
+                    <p class="music-title">玉子の王様</p>
+                    <p class="music-singer">荒川ケンタウロス</p>
+                    <div class="music-rotate">
+                        <div class="music-circle"></div>
+                        <a class="music-poster">
+                            <img src="../img/music-poster.png">
+                            <div class="music-play"></div>
+                        </a>
+                        <div class="text-bg "></div>
+                    </div>
+                </div>
+                <div class="music-bar clearfix">
+                    <div class="fr clearfix">
+                        <span class="icon-fabu-bar fl"></span>
+                        <span class="fabu-num fl">18</span>
+                        <span class="mask fl">-</span>
+                        <span class="icon-coll-c fl"></span>
+                        <span class="mask fl">-</span>
+                        <span class="icon-write-bar fl"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 经典台词 -->
+    <div class="recom-lines">
+        <!-- 胶片背景 -->
+        <div class="film-bg"></div>
+        <div class="ori-title">- 经典台词 -</div>
+        <div class="recom-text indent-sty">
+            <p class="text-sty">明月几时有，月如钩，何人相约黄昏后；明月几时有，月当头，何解一段离愁。</p>
+            <p class="grayColor txt-content">
+                《明月几时有》电影配乐
+                <span class="recom-date">2017-05-11</span></p>
+        </div>
+        <!-- 胶片背景 -->
+        <div class="film-bg"></div>
+    </div>
+
+    <!-- 底部固定 -->
+    <div class="footer">
+        <div class="nav-wrap">
+            <a href="index.html" class="icon-home-c">
+                <img class="public-img" src="../img/home-nc.png"><br>
+                <span>首页</span>
+            </a>
+            <a href="collect.html" class="icon-recom-bar">
+                <img class="public-img" src="../img/shoucang-c.png"><br>
+                <span class="cur-color">推荐</span>
+            </a>
+            <a href="search.html" class="icon-search-bar">
+                <img class="public-img" src="../img/search-nc.png"><br>
+                <span>搜索</span>
+            </a>
+            <a href="main.html" class="icon-mine-bar">
+                <img class="public-img" src="../img/main-nc.png"><br>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="../js/lib/jquery-3.1.1.js"></script>
+<script src="../js/lib/vue.js"></script>
+<script src="../js/lib/less.min.js"></script>
+<script src="../js/lib/vue-router.js"></script>
+<script src="../js/lib/vue-resource.js"></script>
+<script src="../js/del/main.js"></script>
+<script>
+    // 父组件
+    const Storys = Vue.extend({
+        props: ['movieData'],
+        data:()=>{
+            return{
+                Ratings:[1,2,3],
+                visible: false,
+                pflag:null,
+            }
+        },
+        components: {
+            vRatings: Ratings
+        },
+        template: `
+        <div>
+            <input type="button"  value="按钮">
+            <div class="footer">
+                <div class="nav-wrap">
+                    <ul v-for="(item,index) in movieData">
+                        <li>{{item.content}}</li>
+                        <li v-for="items in item.lines">{{items.content}}</li>
+                    </ul>
+                </div>
+            </div>
+            <router-link :to="{name:'Ratings', params: { id : 123}}">
+                <span class="icon-music-bar current">457</span>
+            </router-link>
+            <router-view :abc="Ratings" @change-flag="changeFlag"></router-view>
+        </div>
+        `,
+        mounted() {
+            // 1. 请求本地的数据
+            this.loadCartData();
+        },
+        methods:{
+            loadCartData(){
+                this.$http.get('http://192.168.10.32:8080/data/data2.json').then(response => {
+                    const res = response;
+                    /*this.movieData = res.data;
+                     console.log(this.movieData);*/
+                    if (res && res.status == '200') {
+                        this.Ratings = res.data[0].lines;
+                        console.log(this.Ratings);
+                    }
+                }, response => {  // error callback
+                    console.log("请求数据失败");
+                });
+            },
+            changeFlag(num){
+                console.log(num)
+                this.pflag = num
+            }
+        },
+    })
+    // 子组件
+    const Ratings = Vue.extend({
+        props: ['abc', 'movieData'],
+        data:()=>{
+            return{
+                arr:[
+                    {
+                        num:1,
+                        key:1
+                        // flag:true
+                    },
+                    {
+                        num:2,
+                        key:2
+                        // flag:true
+                    },
+                ],
+                textVal:'',
+                rflag:true
+            }
+        },
+        created:function(){
+            console.log(this.abc)
+            this.init()
+        },
+        watch:{
+            'textVal':function(newval,oldval){
+                this.textVal = newval;
+            }
+        },
+        template: `
+        <div>
+            <div class="footer">
+                <p>{{abc}}</p >
+            </div>
+            <ul>
+                <li v-for="(item,index) in arr">
+                    <p data>{{item.num}}</p >
+                    <p data>{{item.key}}</p >
+                    <a href=" " @click="demoFn(item.flag,index)">num</a>
+                    <a href="javascript:;" @click="keyFn(item.keyflag,index)">key</a>
+                </li>
+                <textarea v-model="textVal" style="border:1px solid red"></textarea>
+                <a href="javascript:;" @click="changeFlagFn(rflag)">改变flag</a>
+            </ul>
+        </div>`,
+        methods:{
+            init(){
+                this.arr.forEach((item,index)=>{
+                    if(typeof item.flag=="undefined"){
+                        this.$set(this.arr[index],'flag',true)
+                    }else{
+                        this.$set(this.arr[index],'flag',true)
+                    }
+                    if(typeof item.keyflag=="undefined"){
+                        this.$set(this.arr[index],'keyflag',true)
+                    }else{
+                        this.$set(this.arr[index],'keyflag',true)
+                    }
+                })
+                console.log(this.arr)
+            },
+            demoFn(flag,index){
+                if(flag){
+                    this.arr[index].flag = false
+                    this.arr[index].num++
+                }else{
+                    // this.arr[index].flag = true
+                    // this.arr[index].num--
+                }
+            },
+            keyFn(flag,index){
+                if(flag){
+                    this.arr[index].keyflag = false
+                    this.arr[index].key--
+                }else{
+                    // this.arr[index].flag = true
+                    // this.arr[index].num--
+                }
+            },
+            changeFlagFn(b){
+                this.rflag = !this.rflag
+                this.$emit('change-flag',b)
+            }
+        }
+    })
+</script>
+</html>

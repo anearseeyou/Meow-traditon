@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>我的点赞</title>
+    <link rel="stylesheet" href="../../../css/reset.css">
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/index.css">
+    <script src="../../../js/lib/fontSize.js"></script>
+</head>
+<body>
+<div id="app">
+
+    <div class="play-details">
+
+        <!-- 头部 -->
+        <div class="backHome">
+            <div class="back-btn"><a href="../../main.html" class="back-bg"></a></div>
+            <div class="play-title">我赞过的</div>  <!-- {{ movieData.name }} -->
+        </div>
+
+        <!-- Tab切换 -->
+        <div class="collect-tab">
+            <a class="tab-list cur-underline" href="javascript:;">全部</a>
+            <a class="tab-list" href="javascript:;">音乐</a>
+            <a class="tab-list" href="javascript:;">台词</a>
+        </div>
+
+        <!-- 全部点赞 -->
+        <div class="showOrHide">
+            <!-- 电影原声 -->
+            <div class="ori-movie clearfix">
+                <!-- 原声音乐 -->
+                <div class="ori-music">
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <div class="movie-music">
+                        <div class="ori-title">- 电影原声 -</div>
+                        <div class="music-info">
+                            <p class="music-title">玉子の王様</p>
+                            <p class="music-singer">荒川ケンタウロス</p>
+                            <div class="music-rotate">
+                                <div class="music-circle"></div>
+                                <a class="music-poster">
+                                    <img src="../../../img/music-poster.png">
+                                    <div class="music-play"></div>
+                                </a>
+                                <div class="text-bg "></div>
+                            </div>
+                        </div>
+                        <div class="music-bar clearfix">
+                            <div class="fr clearfix">
+                                <span class="icon-fabu-bar fl"></span>
+                                <span class="fabu-num fl">18</span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-coll-c fl"></span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-write-bar fl"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 经典台词 -->
+            <div class="recom-lines">
+                <!-- 胶片背景 -->
+                <div class="film-bg"></div>
+                <div class="ori-title">- 经典台词 -</div>
+                <div class="recom-text indent-sty">
+                    <p class="text-sty">明月几时有，月如钩，何人相约黄昏后；明月几时有，月当头，何解一段离愁。</p>
+                    <p class="grayColor txt-content">
+                        《明月几时有》电影配乐
+                        <span class="recom-date">2017-05-11</span></p>
+                </div>
+                <!-- 胶片背景 -->
+                <div class="film-bg"></div>
+            </div>
+        </div>
+
+        <!-- 我的点赞-音乐 -->
+        <div class="showOrHide none">
+            <!-- 收藏的音乐 -->
+            <div class="ori-movie clearfix">
+                <!-- 原声音乐 -->
+                <div class="ori-music">
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <div class="movie-music">
+                        <div class="ori-title">- 电影原声 -</div>
+                        <div class="music-info">
+                            <p class="music-title">玉子の王様</p>
+                            <p class="music-singer">荒川ケンタウロス</p>
+                            <div class="music-rotate">
+                                <div class="music-circle"></div>
+                                <a class="music-poster">
+                                    <img src="../../../img/music-poster.png">
+                                    <div class="music-play"></div>
+                                </a>
+                                <div class="text-bg "></div>
+                            </div>
+                        </div>
+                        <div class="music-bar clearfix">
+                            <div class="fr clearfix">
+                                <span class="icon-fabu-bar fl"></span>
+                                <span class="fabu-num fl">18</span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-coll-c fl"></span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-write-bar fl"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 收藏的音乐 -->
+            <div class="ori-movie clearfix">
+                <!-- 原声音乐 -->
+                <div class="ori-music">
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <div class="movie-music">
+                        <div class="ori-title">- 电影原声 -</div>
+                        <div class="music-info">
+                            <p class="music-title">玉子の王様</p>
+                            <p class="music-singer">荒川ケンタウロス</p>
+                            <div class="music-rotate">
+                                <div class="music-circle"></div>
+                                <a class="music-poster">
+                                    <img src="../../../img/music-poster.png">
+                                    <div class="music-play"></div>
+                                </a>
+                                <div class="text-bg "></div>
+                            </div>
+                        </div>
+                        <div class="music-bar clearfix">
+                            <div class="fr clearfix">
+                                <span class="icon-fabu-bar fl"></span>
+                                <span class="fabu-num fl">18</span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-coll-c fl"></span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-write-bar fl"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 我的点赞-台词 -->
+        <div class="showOrHide none">
+            <div class="sta-lines">
+                <div>
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <!-- 台词内容 -->
+                    <div class="stutra-line">
+                        <div class="ori-title">- 经典台词 -</div>
+                        <div class="line-info">
+                            <a href="#" class="line-text">
+                                "我们都是神枪手，每一颗子弹消灭一个敌人，我们都是飞行军，哪怕那山高水又深，在密密的树林里，到处都安排同志们和兄弟,每一颗子弹消灭一个敌人,每一颗子弹消灭一个敌人"
+                            </a>
+                            <p class="text-sty none-indent from-my">《明月几时有》</p>
+                        </div>
+                        <div class="music-bar clearfix">
+                            <div class="fr clearfix">
+                                <span class="icon-fabu-bar fl"></span>
+                                <span class="fabu-num fl">523</span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-copy-bar fl"></span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-coll-c fl"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <!-- 台词内容 -->
+                    <div class="stutra-line">
+                        <div class="ori-title">- 经典台词 -</div>
+                        <div class="line-info">
+                            <a href="#" class="line-text">
+                                "在高高的山冈上，有我们无数的好兄弟，没有吃没有穿，自有那敌人送上前，没有枪没有炮，敌人给我们造，我们生长在这里，每一寸土地都是我们自己"
+                            </a>
+                            <p class="text-sty none-indent from-my">《明月几时有》</p>
+                        </div>
+                        <div class="music-bar clearfix">
+                            <div class="fr clearfix">
+                                <span class="icon-fabu-bar fl"></span>
+                                <span class="fabu-num fl">1200</span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-copy-bar fl"></span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-coll-c fl"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <!-- 台词内容 -->
+                    <div class="stutra-line">
+                        <div class="ori-title">- 经典台词 -</div>
+                        <div class="line-info">
+                            <a href="#" class="line-text">
+                                "曾经有一首特别好听的歌摆在我的面前，而我却没有听..."
+                            </a>
+                            <p class="text-sty none-indent from-my">《明月几时有》</p>
+                        </div>
+                        <div class="music-bar clearfix">
+                            <div class="fr clearfix">
+                                <span class="icon-fabu-bar fl"></span>
+                                <span class="fabu-num fl">25</span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-copy-bar fl"></span>
+                                <span class="mask fl">-</span>
+                                <span class="icon-coll-c fl"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="../../../js/lib/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="../../../js/lib/vue.js"></script>
+<script type="text/javascript" src="../../../js/lib/less.min.js"></script>
+<script type="text/javascript" src="../../../js/lib/vue-router.js"></script>
+<script type="text/javascript" src="../../../js/lib/vue-resource.js"></script>
+<script type="text/javascript" src="../../../js/del/main.js"></script>
+<script>
+
+</script>
+</html>

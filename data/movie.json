@@ -1,0 +1,134 @@
+[
+  {
+    "id": "1",
+    "movie":{
+      "name": "明月几时有",
+      "poster": "http://olrw5apal.bkt.clouddn.com/poster.png",
+      "release": "2017-07-07",
+      "score": "9.7"
+    },
+    "music": [
+      {
+        "name": "明月几时有",
+        "singer": "关雎尔",
+        "thumbs": "252",
+        "total":"5200",
+        "all":"250",
+        "poster": "http://otbygfeea.bkt.clouddn.com/music-poster.png",
+        "lyricPoster":"http://otbygfeea.bkt.clouddn.com/lines-poster.png",
+        "lyric": "明月几时有？把酒问青天。不知天上宫阙，今夕是何年。我欲乘风归去，又恐琼楼玉宇，高处不胜寒, 起舞弄清影，何似在人间。转朱阁，抵绮户，照无眠。不应有恨，何事偏向别时圆。人有悲欢离合，月有阴晴圆缺，此事古难全。 但愿人长久，千里共婵娟。",
+        "ratings": [
+          {
+            "username": "关关雎鸠",
+            "avatar": "http://olrw5apal.bkt.clouddn.com/background.jpg",
+            "rateTime": "2017-2-15",
+            "thumbs": "257",
+            "content": "歌词写的很好"
+          },
+          {
+            "username": "悟空",
+            "avatar": "http://olrw5apal.bkt.clouddn.com/background.jpg",
+            "rateTime": "2017-6-15",
+            "thumbs": "287",
+            "content": "歌词写的很垃圾"
+          },
+          {
+            "username": "八戒",
+            "avatar": "http://olrw5apal.bkt.clouddn.com/background.jpg",
+            "rateTime": "2017-6-15",
+            "thumbs": "287",
+            "content": "歌词写的很垃圾"
+          },
+          {
+            "username": "唐唐",
+            "avatar": "http://olrw5apal.bkt.clouddn.com/background.jpg",
+            "rateTime": "2017-6-15",
+            "thumbs": "287",
+            "content": "阿弥陀佛,加油写好的歌词"
+          }
+        ]
+      },
+      {
+        "name": "曾经守候",
+        "singer": "张碧晨",
+        "thumbs": "512",
+        "poster": "http://otbygfeea.bkt.clouddn.com/music-poster1.png",
+        "lyricPoster":"http://otbygfeea.bkt.clouddn.com/lines-poster.png",
+        "lyric": "那时候 天空青涩灰濛 而你 向往湛蓝大地 我想我不能 阻碍你的旅行 牵着手 练习着失去 骗自己 不再为你倾心 沉默 却有更多话语 没想过我 早已经没有权利 你是我 最好的相遇 而我无法忘记 你的眼睛我的呼吸 而你 你却轻易 离开了我无声无息 曾经守候 我给你我所有 你给的承诺 全都消失 无踪 我还在等候 灯火阑珊回眸",
+        "ratings": [
+          {
+            "username": "关关雎鸠",
+            "avatar": "http://olrw5apal.bkt.clouddn.com/background.jpg",
+            "rateTime": "2017-2-15",
+            "thumbs": "257",
+            "content": "歌词写的很好"
+          },
+          {
+            "username": "悟空",
+            "avatar": "http://olrw5apal.bkt.clouddn.com/background.jpg",
+            "rateTime": "2017-6-15",
+            "thumbs": "287",
+            "content": "歌词写的很垃圾"
+          },
+          {
+            "username": "八戒",
+            "avatar": "http://olrw5apal.bkt.clouddn.com/background.jpg",
+            "rateTime": "2017-6-15",
+            "thumbs": "287",
+            "content": "歌词写的很垃圾"
+          },
+          {
+            "username": "唐唐",
+            "avatar": "http://olrw5apal.bkt.clouddn.com/background.jpg",
+            "rateTime": "2017-6-15",
+            "thumbs": "287",
+            "content": "阿弥陀佛,加油写好的歌词"
+          }
+        ]
+      }
+    ],
+    "story": [
+      {
+        "content":"该片讲述了以香港传奇女性“方姑”为代表的仁人志士，在1940年代风云变幻的香港，大批文人纷纷离港，原本的老实的方姑，在为了帮助自己“偶像”茅盾先生离开，意外结识刘黑仔。与东江游击队克服重重困难，将何香凝、柳亚子、茅盾、邹韬奋等数百文化名人及爱国民主人士成功营救出战火纷飞的香港。"
+      }
+    ],
+    "lines": [
+      {
+        "content": "我们都是神枪手，每一颗子弹消灭一个敌人，我们都是飞行军，哪怕那山高水又深，在密密的树林里，到处都安排同志们和兄弟,每一颗子弹消灭一个敌人,每一颗子弹消灭一个敌人...",
+        "thumbs": "258"
+      },
+      {
+        "content": "在高高的山冈上，有我们无数的好兄弟，没有吃没有穿，自有那敌人送上前，没有枪没有炮，敌人给我们造，我们生长在这里，每一寸土地都是我们自己...",
+        "thumbs": "524"
+      },
+      {
+        "content": "曾经有一首特别好听的歌摆在我的面前，而我却没有听...",
+        "thumbs": "58"
+      }
+    ],
+    "ratings": [
+      {
+        "username": "关关雎鸠",
+        "avatar": "http://otbygfeea.bkt.clouddn.com/xiaoxin.png",
+        "rateTime": "2017-2-15",
+        "thumbs": "257",
+        "content": "许鞍华的节奏散漫在这部电影中暴露的一览无余，又不是非常走心能用情感填补的类型。她真的不适合拍这种。演员都有硬伤，周迅的灵与静在里面略显得呆板和笨重，彭于晏中规中矩，霍建华表现略拖后腿，有点小灾难。"
+      },
+      {
+        "username": "在河之洲",
+        "avatar": "http://otbygfeea.bkt.clouddn.com/xiaoxin.png",
+        "rateTime": "2017-2-15",
+        "thumbs": "520",
+        "content": "国网友就真的只能在这儿嚷嚷食肉无罪，当小丑自诩植物保护主义者，再用自己的高智商耻笑人家电影的逻辑和价值吗？真的只有这些了吗？"
+      },
+      {
+        "username": "窈窕淑女",
+        "avatar": "http://otbygfeea.bkt.clouddn.com/xiaoxin.png",
+        "rateTime": "2017-3-15",
+        "thumbs": "1250",
+        "content": "成年人只看利益，青年人只看激情，小孩子只看感情，萌猪猪只看主人。（玉子救萝莉拍得猫奴泪目。革命青年们隧道劫玉子搞笑惊悚又浪漫。最后一幕群猪嚎叫燃了——猪即是人。保罗达诺天真到无辜，想扑倒。）"
+      }
+    ]
+  }
+]
+

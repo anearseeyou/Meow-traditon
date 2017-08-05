@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>搜索结果</title>
+    <link rel="stylesheet" href="../../../css/reset.css">
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/index.css">
+    <script src="../../../js/lib/fontSize.js"></script>
+</head>
+<body>
+<div id="app">
+    <!-- 头部 -->
+    <div class="backHome search-head">
+        <div class="back-btn search-back"><a href="../../search.html" class="back-bg"></a></div>
+        <div class="search-input"><input type="text" placeholder="搜一搜"></div>
+        <div class="write-btn search-bar"><a class="write-bg search-btn"></a></div>
+    </div>
+
+    <!-- 搜索结果-->
+    <div class="search-result">
+        <!-- Tab切换 -->
+        <div class="collect-tab">
+            <a class="tab-list" href="javascript:;">电影</a>
+            <a class="tab-list cur-underline" href="javascript:;">音乐</a>
+            <a class="tab-list" href="javascript:;">点评</a>
+        </div>
+    </div>
+
+    <!-- 电影 -->
+    <div class="showOrHide none">
+        <div class="search-music clearfix">
+            <div class="search-pic fl">
+                <img src="../../../img/music-poster1.png" alt="">
+            </div>
+            <div class="search-musname fl">
+                <span class="result-name">大护法</span>
+                <span class="grayColor font40">电影</span>
+            </div>
+            <div class="search-linkbar fr">
+                <span class="search-linkbar-bg"></span>
+            </div>
+        </div>
+        <div class="search-music clearfix">
+            <div class="search-pic fl">
+                <img src="../../../img/music-poster1.png" alt="">
+            </div>
+            <div class="search-musname fl">
+                <span class="result-name">大护法</span>
+                <span class="grayColor font40">电影</span>
+            </div>
+            <div class="search-linkbar fr">
+                <span class="search-linkbar-bg"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 音乐 -->
+    <div class="showOrHide">
+        <div class="search-music clearfix">
+            <div class="search-pic fl">
+                <img src="../../../img/music-poster1.png" alt="">
+            </div>
+            <div class="search-musname fl">
+                <span class="result-name">大护法</span>
+                <span class="grayColor font40">音乐</span>
+            </div>
+            <div class="search-linkbar fr">
+                <span class="search-linkbar-bg"></span>
+            </div>
+        </div>
+        <div class="search-music clearfix">
+            <div class="search-pic fl">
+                <img src="../../../img/music-poster1.png" alt="">
+            </div>
+            <div class="search-musname fl">
+                <span class="result-name">大护法</span>
+                <span class="grayColor font40">音乐</span>
+            </div>
+            <div class="search-linkbar fr">
+                <span class="search-linkbar-bg"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 点评 -->
+    <div class="showOrHide none">
+        <div class="search-music clearfix">
+            <div class="search-pic fl">
+                <img src="../../../img/music-poster1.png" alt="">
+            </div>
+            <div class="search-musname search-rat fl">
+                如果你无法简洁的表发你的想法，那说明你还不够了解他
+            </div>
+            <div class="search-linkbar fr">
+                <span class="search-linkbar-bg"></span>
+            </div>
+        </div>
+        <div class="search-music clearfix">
+            <div class="search-pic fl">
+                <img src="../../../img/music-poster1.png" alt="">
+            </div>
+            <div class="search-musname search-rat fl">
+                如果你无法简洁的表发你的想法，那说明你还不够了解他
+            </div>
+            <div class="search-linkbar fr">
+                <span class="search-linkbar-bg"></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+<script src="../../../js/lib/jquery-3.1.1.js"></script>
+<script src="../../../js/lib/vue.js"></script>
+<script src="../../../js/lib/less.min.js"></script>
+<script src="../../../js/lib/vue-router.js"></script>
+<script src="../../../js/lib/vue-resource.js"></script>
+<script src="../../../js/del/main.js"></script>
+</html>

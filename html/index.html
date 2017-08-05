@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>幕喵-app</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../js/lib/fontSize.js"></script>
+</head>
+<body>
+<div id="app">
+    <!-- 首页 -->
+    <div v-show="footerNavIndex == 0" class="homePage">
+        <!-- 音乐主内容 -->
+        <div v-show="homeHeader" class="home-wrapper">
+            <!-- 首页头部 -->
+            <div class="header">
+                <div class="movie-code">
+                    <a class="bg-image" href="template/search-result/code-search.html"></a>
+                </div>
+                <div class="movie-title">
+                    <span>{{ movieData.name }}</span>
+                </div>
+            </div>
+
+            <!-- 电影海报 -->
+            <div class="banner">
+                <img class="banner-poster"
+                     :src="movieData.poster == true ? movieData.poster : '../img/poster.png'"
+                     :alt="movieData.name">
+            </div>
+
+            <!-- 上映时间 -->
+            <div v-if="movieData" class="banner-info">
+            <span class="deliveryTime">
+                上映时间：{{ movieData.release }}
+            </span>
+                <span class="score">
+                豆瓣评分：{{ movieData.score }}
+            </span>
+            </div>
+
+            <!-- 主路由切换 -->
+            <div class="nav indent-sty">
+                <div class="nav-music">
+                    <span v-show="routerChange == 0" class="music-text">原声音乐</span>
+                    <span v-show="routerChange == 1" class="music-text">经典台词</span>
+                    <span v-show="routerChange == 2" class="music-text">电影故事</span>
+                    <span v-show="routerChange == 3" class="music-text">影片短评</span>
+                </div>
+                <div class="nav-item" @click="routerChange = 0">
+                    <router-link to="/music">
+                        <span :class="routerChange == 0 ? 'icon-music-bar current' : 'icon-music-bar'"></span>
+                    </router-link>
+                </div>
+                <div class="nav-item" @click="routerChange = 1">
+                    <router-link to="/lines">
+                        <span :class="routerChange == 1 ? 'icon-line-bar current' : 'icon-line-bar'"></span>
+                    </router-link>
+                </div>
+                <div class="nav-item" @click="routerChange = 2">
+                    <router-link to="/storys">
+                        <span :class="routerChange == 2 ? 'icon-story-bar current' : 'icon-story-bar'"></span>
+                    </router-link>
+                </div>
+                <div class="nav-item" @click="routerChange = 3">
+                    <router-link to="/ratings">
+                        <span :class="routerChange == 3 ? 'icon-rat-bar current' : 'icon-rat-bar'"></span>
+                    </router-link>
+                </div>
+            </div>
+
+            <!-- 路由占位符 -->
+            <div class="content">
+                <!--设置占位符-->
+                <keep-alive>
+                    <router-view :movieData="movieData" ref="parentCallFn"
+                                 :musicTpl="homeHeader,musicDetails"
+                                 :linesTpl="homeHeader,linesDetails"
+                                 :storyTpl="homeHeader,storyDetails"
+                                 :ratingsTpl="homeHeader,ratingsDetails"
+                                 @transmit-lines="transmitLines"
+                                 @transmit-music="transmitMusic"
+                                 @transmit-story="transmitStory"
+                                 @transmit-ratings="transmitRatings">
+                    </router-view>
+                </keep-alive>
+            </div>
+        </div>
+
+        <!-- 歌词详情页 -->
+        <div v-show="musicDetails" class="music-wrapper">
+
+            <div class="play-details">
+                <!-- 头部 -->
+                <div class="backHome">
+                    <div class="back-btn"><a class="back-bg" @click="backHome"></a></div>
+                    <div class="play-title">{{ movieData.name }}</div>
+                    <div class="write-btn share-btn"><a @click="" class="write-bg"></a></div>
+                </div>
+                <!-- 歌词海报 -->
+                <div class="play-video">
+                    <video class="lines-poster"
+                           :poster="music.poster == true ? music.poster : '../img/lines-poster.png'">
+
+                    </video>
+                    <i class="play-bar"></i>
+                    <div class="control clearfix">
+                        <span class="fl">01:00</span>
+                        <span class="fl ctrl-bar"><i class="mask-bar"></i></span>
+                        <span class="fr">04:22</span>
+                    </div>
+                </div>
+                <!-- 歌词导航 -->
+                <div class="lines-tab indent-sty">
+                    <div class="lines-text">
+                        <span v-show="detailsNav == 0" class="line-title">电影歌词</span>
+                        <span v-show="detailsNav == 1" class="line-title">电影故事</span>
+                    </div>
+                    <div class="lines-movie" @click="detailsNav = 0">
+                        <span :class="detailsNav == 0 ? 'line-lyric clickLyric' : 'line-lyric'"></span>
+                    </div>
+                    <div class="lines-movie" @click="detailsNav = 1">
+                        <span :class="detailsNav == 1 ? 'line-story clickStory' : 'line-story'"></span>
+                    </div>
+                </div>
+                <!-- 胶片背景 -->
+                <div class="film-bg"></div>
+
+                <!-- 歌词内容 -->
+                <div v-show="detailsNav == 0" class="lyric-content">
+                    <div class="sing-lines indent-sty text-sty">
+                        <!-- 歌词 -->
+                        <p class="sing-text">
+                            {{ music.lyric }}
+                        </p>
+                    </div>
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <div class="lines-tab indent-sty">
+                        <div class="lines-text ">
+                            <div class="clearfix ratings-title">
+                                <span class="icon-rat-bar fl"></span>
+                                <span class="line-title rat-list fl ">评论列表</span>
+                            </div>
+                            <!-- 评论列表页 -->
+                            <div v-for="rat in music.ratings" class="ratings-list">
+                                <div class="user-u change-u clearfix">
+                                    <div class="user-portrait fl">
+                                        <img :src="rat.avatar ? rat.avatar : '../img/delete/user-avart.png'"
+                                             :alt="rat.username">
+                                    </div>
+                                    <div class="user-info fl">
+                                        <span class="user-name">{{ rat.username ? rat.username : '齐儿'}}</span>
+                                        <span class="rat-date">{{ rat.rateTime }}</span>
+                                    </div>
+                                </div>
+                                <div class="rat-text">
+                                    <p class="text-sty change-sty">{{ rat.content }}</p>
+                                </div>
+                                <div class="rat-bar clearfix">
+                                    <div class="fr">
+                                    <span class="icon-thumbs-bar fl"
+                                          :class="rat.myIsPraise ? 'clickThumbs' : '' "
+                                          @click="musicDetailsThubmsUp(rat)">
+                                    </span>
+                                        <span class="fabu-num fl">{{ rat.thumbs }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 故事内容 -->
+                <div v-show="detailsNav == 1" class="lyric-content">
+                    <div class="sing-lines indent-sty text-sty">
+                        <p class="sing-text sing-content">
+                            {{ movieData.content }}
+                        </p>
+                    </div>
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <div class="lines-tab indent-sty">
+                        <div class="lines-text ">
+                            <div class="clearfix ratings-title">
+                                <span class="icon-rat-bar fl"></span>
+                                <span class="line-title rat-list fl ">评论列表</span>
+                            </div>
+                            <!-- 评论列表页 -->
+                            <div v-for="rat in music.ratings" class="ratings-list">
+                                <div class="user-u change-u clearfix">
+                                    <div class="user-portrait fl">
+                                        <img :src="rat.avatar ? rat.avatar : '../img/delete/user-avart.png'"
+                                             :alt="rat.username">
+                                    </div>
+                                    <div class="user-info fl">
+                                        <span class="user-name">{{ rat.username ? rat.username : '齐儿'}}</span>
+                                        <span class="rat-date">{{ rat.rateTime }}</span>
+                                    </div>
+                                </div>
+                                <div class="rat-text">
+                                    <p class="text-sty change-sty">{{ rat.content }}</p>
+                                </div>
+                                <div class="rat-bar clearfix">
+                                    <div class="fr">
+                                    <span class="icon-thumbs-bar fl"
+                                          :class="rat.myIsPraise ? 'clickThumbs' : '' "
+                                          @click="musicDetailsThubmsUp(rat)">
+                                    </span>
+                                        <span class="fabu-num fl">{{ rat.thumbs }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 底部固定 -->
+                <div class="rat-footer">
+                    <div class="rat-left">
+                        <span class="left-bar icon-collect-bar"
+                              :class="music.myIsCollect ? 'clickCollect' : ''"
+                              @click="musicDetailsCollect(music)">
+                        </span>
+                        <span class="left-bar icon-thumbs-bar"
+                              :class="music.myIsPraise ? 'clickThumbs' : ''"
+                              @click="musicDetailsThumbs(music)">
+                        </span>
+                        <span class="left-bar icon-write-bar"
+                              @click="showLayer"></span>
+                    </div>
+                    <div class="rat-middle"></div>
+                    <div class="rat-right">
+                        <span class="right-bar">{{ music.thumbs }}赞</span>
+                        <span class="right-bar">{{ music.total }}评论</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 分享弹层 -->
+            <div class="float-layer"></div>
+            <div class="share-layer">
+                <div class="share-to font48">分享到</div>
+                <div class="share-link">
+                    <a class="share-link-to" href="javascript:;">
+                        <span class="share-toqq"></span><br>
+                        <em>QQ</em>
+                    </a>
+                    <a class="share-link-to" href="javascript:;">
+                        <span class="share-tofr"></span><br>
+                        <em>朋友圈</em>
+                    </a>
+                    <a class="share-link-to" href="javascript:;">
+                        <span class="share-towb"></span><br>
+                        <em>微博</em>
+                    </a>
+                    <a class="share-link-to" href="javascript:;">
+                        <span class="share-towx"></span><br>
+                        <em>微信好友</em>
+                    </a>
+                </div>
+                <div class="share-close">
+                    <i class="share-close-bar"></i>
+                </div>
+            </div>
+            <!-- 写评论弹层 -->
+            <div v-show="isRatingsShow" class="write-rat">
+                <div class="write-content">
+                    <textarea class="text-sty none-indent write-pl" placeholder="在这里写下你想说的话"
+                              @input="textareaText" v-model="ratContent">
+                    </textarea>
+                    <p class="textarea-text"><span class="text-ctrl">{{remnant}}</span>/100</p>
+                </div>
+                <div class="write-relace fr">
+                    <span class="write-relace-btn" @click="musicRatings(music)">发布</span>
+                </div>
+                <i class="write-close" @click="hideLayer"></i>
+            </div>
+        </div>
+
+        <!-- 台词详情页 -->
+        <div v-show="linesDetails" class="line-wrapper">
+            <div class="play-details">
+                <!-- 头部 -->
+                <div class="backHome lines-head">
+                    <div class="back-btn"><a @click="backHome" class="back-bg"></a></div>
+                    <div class="play-title">经典台词</div>
+                </div>
+                <!-- 歌词内容 -->
+                <div class="sing-lines indent-sty text-sty cm">
+                    <p class="sing-text"> {{ line.content }}
+                    <p class="from-text">《{{ movieData.name }}》</p>
+                    </p>
+                </div>
+                <!-- 底部固定 -->
+                <div class="rat-footer">
+                    <div class="rat-left">
+                        <span class="left-bar icon-collect-bar"
+                              :class="line.myIsCollect ? 'clickCollect' : ''"
+                              @click="linesDetailsCollect(line)">
+                        </span>
+                        <span class="left-bar icon-thumbs-bar"
+                              :class="line.myIsPraise ? 'clickThumbs' : ''"
+                              @click="linesDetailsThumbs(line)">
+                        </span>
+                        <span class="left-bar icon-copy-bar"
+                              :data-clipboard-text="line.content"
+                              data-clipboard-action="copy"
+                              @click="copyContent">
+                        </span>
+                    </div>
+                    <div class="rat-middle"></div>
+                    <div class="rat-right">
+                        <span class="right-bar">{{ line.thumbs }}赞</span>
+                        <span class="right-bar">更多台词</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 故事详情页 -->
+        <div v-show="storyDetails" class="story-wrapper">
+            <div class="play-details">
+                <!-- 头部 -->
+                <div class="backHome">
+                    <div class="back-btn"><a class="back-bg" @click="backHome"></a></div>
+                    <div class="play-title">{{ movieData.name }}</div>
+                    <div class="write-btn share-btn"><a @click="shareLink" class="write-bg"></a></div>
+                </div>
+                <!-- 歌词海报 -->
+                <div class="play-video">
+                    <video class="lines-poster"
+                           :poster="music.poster == true ? music.poster : '../img/lines-poster.png'">
+                    </video>
+                    <i class="play-bar"></i>
+                    <div class="control clearfix">
+                        <span class="fl">01:00</span>
+                        <span class="fl ctrl-bar"><i class="mask-bar"></i></span>
+                        <span class="fr">04:22</span>
+                    </div>
+                </div>
+                <!-- 歌词导航 -->
+                <div class="lines-tab indent-sty">
+                    <div class="lines-text">
+                        <span v-show="storyNav == 1" class="line-title">电影歌词</span>
+                        <span v-show="storyNav == 0" class="line-title">电影故事</span>
+                    </div>
+                    <div class="lines-movie" @click="storyNav = 1">
+                        <span :class="storyNav == 1 ? 'line-lyric clickLyric' : 'line-lyric'"></span>
+                    </div>
+                    <div class="lines-movie" @click="storyNav = 0">
+                        <span :class="storyNav == 0 ? 'line-story clickStory' : 'line-story'"></span>
+                    </div>
+                </div>
+                <!-- 胶片背景 -->
+                <div class="film-bg"></div>
+
+                <!-- 歌词内容 -->
+                <div v-show="storyNav == 1" class="lyric-content">
+                    <div class="sing-lines indent-sty text-sty">
+                        <!-- 歌词 -->
+                        <p class="sing-text">
+                            {{ music.lyric }}
+                        </p>
+                    </div>
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <div class="lines-tab indent-sty">
+                        <div class="lines-text ">
+                            <div class="clearfix ratings-title">
+                                <span class="icon-rat-bar fl"></span>
+                                <span class="line-title rat-list fl ">评论列表</span>
+                            </div>
+                            <!-- 评论列表页 -->
+                            <div v-for="rat in music.ratings" class="ratings-list">
+                                <div class="user-u change-u clearfix">
+                                    <div class="user-portrait fl">
+                                        <img :src="rat.avatar ? rat.avatar : '../img/delete/user-avart.png'"
+                                             :alt="rat.username">
+                                    </div>
+                                    <div class="user-info fl">
+                                        <span class="user-name">{{ rat.username ? rat.username : '齐儿'}}</span>
+                                        <span class="rat-date">{{ rat.rateTime }}</span>
+                                    </div>
+                                </div>
+                                <div class="rat-text">
+                                    <p class="text-sty change-sty">{{ rat.content }}</p>
+                                </div>
+                                <div class="rat-bar clearfix">
+                                    <div class="fr">
+                                    <span class="icon-thumbs-bar fl"
+                                          :class="rat.myIsPraise ? 'clickThumbs' : '' "
+                                          @click="musicDetailsThubmsUp(rat)">
+                                    </span>
+                                        <span class="fabu-num fl">{{ rat.thumbs }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 故事内容 -->
+                <div v-show="storyNav == 0" class="lyric-content">
+                    <div class="sing-lines indent-sty text-sty">
+                        <p class="sing-text sing-content">
+                            {{ movieData.content }}
+                        </p>
+                    </div>
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <div class="lines-tab indent-sty">
+                        <div class="lines-text ">
+                            <div class="clearfix ratings-title">
+                                <span class="icon-rat-bar fl"></span>
+                                <span class="line-title rat-list fl ">评论列表</span>
+                            </div>
+                            <!-- 评论列表页 -->
+                            <div v-for="rat in music.ratings" class="ratings-list">
+                                <div class="user-u change-u clearfix">
+                                    <div class="user-portrait fl">
+                                        <img :src="rat.avatar ? rat.avatar : '../img/delete/user-avart.png'"
+                                             :alt="rat.username">
+                                    </div>
+                                    <div class="user-info fl">
+                                        <span class="user-name">{{ rat.username ? rat.username : '齐儿'}}</span>
+                                        <span class="rat-date">{{ rat.rateTime }}</span>
+                                    </div>
+                                </div>
+                                <div class="rat-text">
+                                    <p class="text-sty change-sty">{{ rat.content }}</p>
+                                </div>
+                                <div class="rat-bar clearfix">
+                                    <div class="fr">
+                                    <span class="icon-thumbs-bar fl"
+                                          :class="rat.myIsPraise ? 'clickThumbs' : '' "
+                                          @click="musicDetailsThubmsUp(rat)">
+                                    </span>
+                                        <span class="fabu-num fl">{{ rat.thumbs }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 底部固定 -->
+                <div class="rat-footer">
+                    <div class="rat-left">
+                        <span class="left-bar icon-collect-bar"
+                              :class="music.myIsCollect ? 'clickCollect' : ''"
+                              @click="musicDetailsCollect(music)">
+                        </span>
+                        <span class="left-bar icon-thumbs-bar"
+                              :class="music.myIsPraise ? 'clickThumbs' : ''"
+                              @click="musicDetailsThumbs(music)">
+                        </span>
+                        <span class="left-bar icon-write-bar"
+                              @click="showLayer"></span>
+                    </div>
+                    <div class="rat-middle"></div>
+                    <div class="rat-right">
+                        <span class="right-bar">{{ music.thumbs }}赞</span>
+                        <span class="right-bar">{{ music.total }}评论</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 分享弹层 -->
+            <div v-show="flag" class="float-layer"></div>
+            <div v-show="flag" class="share-layer">
+                <div class="share-to font48">分享到</div>
+                <div class="share-link">
+                    <a class="share-link-to" href="javascript:;">
+                        <span class="share-toqq"></span><br>
+                        <em>QQ</em>
+                    </a>
+                    <a class="share-link-to" href="javascript:;">
+                        <span class="share-tofr"></span><br>
+                        <em>朋友圈</em>
+                    </a>
+                    <a class="share-link-to" href="javascript:;">
+                        <span class="share-towb"></span><br>
+                        <em>微博</em>
+                    </a>
+                    <a class="share-link-to" href="javascript:;">
+                        <span class="share-towx"></span><br>
+                        <em>微信好友</em>
+                    </a>
+                </div>
+                <div class="share-close">
+                    <i @click="shareLink" class="share-close-bar"></i>
+                </div>
+            </div>
+
+            <!-- 写评论弹层 -->
+            <div v-show="isRatingsShow" class="write-rat">
+                <div class="write-content">
+                    <textarea class="text-sty none-indent write-pl" placeholder="在这里写下你想说的话"
+                              @input="textareaText" v-model="ratContent">
+                    </textarea>
+                    <p class="textarea-text"><span class="text-ctrl">{{remnant}}</span>/100</p>
+                </div>
+                <div class="write-relace fr">
+                    <span class="write-relace-btn" @click="musicRatings(music)">发布</span>
+                </div>
+                <i class="write-close" @click="hideLayer"></i>
+            </div>
+        </div>
+
+        <!-- 短评详情页 -->
+        <div v-show="ratingsDetails" class="ratings-wrapper">
+            <!-- 头部 -->
+            <div class="backHome rat-details">
+                <div class="back-btn"><a @click="backHome" class="back-bg"></a></div>
+                <div class="play-title">评论列表页</div>
+            </div>
+            <!-- 内容 -->
+            <div class="play-details">
+                <div class="lines-tab indent-sty">
+                    <div class="lines-text ">
+                        <div class="clearfix ratings-title">
+                            <span class="icon-rat-bar fl"></span>
+                            <span class="line-title rat-list fl">评论列表</span>
+                        </div>
+                        <!-- 列表 -->
+                        <div v-for="rat in movieData.ratings" class="ratings-list">
+                            <div class="user-u change-u clearfix">
+                                <div class="user-portrait fl">
+                                    <img :src="rat.avatar" :alt="rat.username">
+                                </div>
+                                <div class="user-info fl">
+                                    <span class="user-name">
+                                        {{ rat.username ? rat.username : 'who are you'}}
+                                    </span>
+                                    <span class="rat-date">{{ rat.rateTime }}</span>
+                                </div>
+                            </div>
+                            <div class="rat-text">
+                                <p class="text-sty change-sty">
+                                    {{rat.content ? rat.content : '来啊!快活啊!'}}
+                                </p>
+                            </div>
+                            <div class="rat-bar clearfix">
+                                <div class="fr">
+                                    <span class="icon-thumbs-bar fl"
+                                          :class="rat.myIsPraise ? 'clickThumbs' : ''"
+                                          @click="ratingsDetailsThumbs(rat)">
+                                    </span>
+                                    <span class="fabu-num fl">{{ rat.thumbs }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 底部固定 -->
+                <div class="rat-footer">
+                    <div class="rat-left">
+                        <span class="left-bar icon-collect-bar"></span>
+                        <span class="left-bar icon-thumbs-bar"></span>
+                        <span class="left-bar icon-write-bar"></span>
+                    </div>
+                    <div class="rat-middle"></div>
+                    <div class="rat-right">
+                        <span class="right-bar">{{ rat.thumbs }}赞</span>
+                        <span class="right-bar">12评论</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 推荐 -->
+    <div v-show="footerNavIndex == 1" class="collectPage">
+        <!-- 头部固定 -->
+        <div class="header">
+            <div class="movie-title">
+                <span>幕喵推荐</span>
+            </div>
+        </div>
+
+        <!-- banner -->
+        <div class="ori-title movie-recom">- 电影 -</div>
+        <!-- 电影海报 -->
+        <div class="banner recom-banner">
+            <img src="../img/recom-poster.png" class="banner-poster">
+        </div>
+        <div class="deliveryDate">2017年5月19日上映</div>
+
+
+        <!-- 电影原声 -->
+        <div class="ori-movie clearfix">
+            <!-- 原声音乐 -->
+            <div class="ori-music">
+                <!-- 胶片背景 -->
+                <div class="film-bg"></div>
+                <div class="movie-music">
+                    <div class="ori-title">- 电影原声 -</div>
+                    <div class="music-info">
+                        <p class="music-title">玉子の王様</p>
+                        <p class="music-singer">荒川ケンタウロス</p>
+                        <div class="music-rotate">
+                            <div class="music-circle"></div>
+                            <a class="music-poster">
+                                <img src="../img/music-poster.png">
+                                <div class="music-play"></div>
+                            </a>
+                            <div class="text-bg "></div>
+                        </div>
+                    </div>
+                    <div class="music-bar clearfix">
+                        <div class="fr clearfix">
+                            <span class="icon-thumbs-bar fl"></span>
+                            <span class="fabu-num fl">0</span>
+                            <span class="mask fl">-</span>
+                            <span class="icon-collect-bar fl"></span>
+                            <span class="mask fl">-</span>
+                            <span class="icon-write-bar fl"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 经典台词 -->
+        <div class="recom-lines">
+            <!-- 胶片背景 -->
+            <div class="film-bg"></div>
+            <div class="ori-title">- 经典台词 -</div>
+            <div class="recom-text indent-sty">
+                <p class="text-sty">明月几时有，月如钩，何人相约黄昏后；明月几时有，月当头，何解一段离愁。</p>
+                <p class="grayColor txt-content">
+                    《明月几时有》电影配乐
+                    <span class="recom-date">2017-05-11</span></p>
+            </div>
+            <!-- 胶片背景 -->
+            <div class="film-bg"></div>
+        </div>
+    </div>
+
+    <!-- 搜索 -->
+    <div v-show="footerNavIndex == 2" class="searchPage">
+        <div class="search-page">
+            <div class="search-info">
+                <h1 class="mm-search">幕喵搜索</h1>
+                <p class="mm-text grayColor">搜索引擎就是把字典放到硅片里</p>
+                <div class="search-box">
+                    <input class="search-input" type="text" placeholder="这里输入搜索词"
+                           v-model="searchContent">
+                    <a @click="searchBtn" class="search-btn"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 我的 -->
+    <div v-show="footerNavIndex == 3" class="mainPage">
+        <!-- 我的列表 -->
+        <div v-show="myIndex == 0" class="main-list">
+            <!-- 头部固定 -->
+            <div class="header">
+                <div class="movie-code"></div>
+            </div>
+            <div class="main-bgc">
+                <!-- 用户头像 -->
+                <div class="main-pic">
+                    <img class="user-pic" src="../img/user-pic.png" alt=""><br>
+                    <span class="font48">小萌新</span>
+                </div>
+            </div>
+            <!-- 用户信息 -->
+            <div class="main-info">
+                <div>
+                    <a @click="myIndex = 1" class="user-list">
+                        <span class="sc-bar block fl"></span>
+                        <span class="sc-text block fl">我收藏的</span>
+                        <span class="sc-open block fr"></span>
+                    </a>
+                    <a @click="myIndex = 2" class="user-list">
+                        <span class="sc-bar block main-fadu fl"></span>
+                        <span class="sc-text block fl">我赞过的</span>
+                        <span class="sc-open block fr"></span>
+                    </a>
+                    <a @click="myIndex = 3" class="user-list">
+                        <span class="sc-bar block main-comment  fl"></span>
+                        <span class="sc-text block fl ">我评论的</span>
+                        <span class="sc-open block fr"></span>
+                    </a>
+                    <a @click="myIndex = 4" class="user-list">
+                        <span class="sc-bar block main-news fl"><i class="remind-news"></i></span>
+                        <span class="sc-text block fl">我的消息</span>
+                        <span class="sc-open block fr"></span>
+                    </a>
+                    <a @click="myIndex = 5" class="user-list">
+                        <span class="sc-bar block main-about fl"></span>
+                        <span class="sc-text block fl">关于我们</span>
+                        <span class="sc-open block fr"></span>
+                    </a>
+                    <a @click="myIndex = 6" class="user-list">
+                        <span class="sc-bar block main-signout fl"></span>
+                        <span class="sc-text block fl">退出登录</span>
+                        <span class="sc-open block fr"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- 我的收藏 -->
+        <div v-show="myIndex == 1" class="collcet-wrapper">
+            <!-- 头部固定 -->
+            <div class="header">
+                <div class="movie-code">
+                    <a class="bg-image back-img" @click="backMyList"></a>
+                </div>
+                <div class="movie-title">
+                    <span>我的收藏</span>
+                </div>
+            </div>
+
+            <!-- Tab切换 -->
+            <div class="collect-tab">
+                <a @click="tabChange = 0"
+                   :class="tabChange == 0 ? 'tab-list cur-underline' : 'tab-list'">全部</a>
+                <a @click="tabChange = 1"
+                   :class="tabChange == 1 ? 'tab-list cur-underline' : 'tab-list'">音乐</a>
+                <a @click="tabChange = 2"
+                   :class="tabChange == 2 ? 'tab-list cur-underline' : 'tab-list'">台词</a>
+            </div>
+
+            <!-- 全部收藏 -->
+            <div v-show="tabChange == 0">
+                <!-- 电影原声 -->
+                <div class="ori-movie clearfix">
+                    <!-- 原声音乐 -->
+                    <div class="ori-music">
+                        <!-- 胶片背景 -->
+                        <div class="film-bg"></div>
+                        <div class="movie-music">
+                            <div class="ori-title">- 电影原声 -</div>
+                            <div class="music-info">
+                                <p class="music-title">玉子の王様</p>
+                                <p class="music-singer">荒川ケンタウロス</p>
+                                <div class="music-rotate">
+                                    <div class="music-circle"></div>
+                                    <a class="music-poster">
+                                        <img src="../img/music-poster.png">
+                                        <div class="music-play"></div>
+                                    </a>
+                                    <div class="text-bg "></div>
+                                </div>
+                            </div>
+                            <div class="music-bar clearfix">
+                                <div class="fr clearfix">
+                                    <span class="icon-fabu-bar fl"></span>
+                                    <span class="fabu-num fl">18</span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-coll-c fl"></span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-write-bar fl"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 经典台词 -->
+                <div class="recom-lines">
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <div class="ori-title">- 经典台词 -</div>
+                    <div class="recom-text indent-sty">
+                        <p class="text-sty">明月几时有，月如钩，何人相约黄昏后；明月几时有，月当头，何解一段离愁。</p>
+                        <p class="grayColor txt-content">
+                            《明月几时有》电影配乐
+                            <span class="recom-date">2017-05-11</span></p>
+                    </div>
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                </div>
+            </div>
+
+            <!-- 音乐收藏-->
+            <div v-show="tabChange == 1">
+                <!-- 收藏的音乐 -->
+                <div class="ori-movie clearfix">
+                    <!-- 原声音乐 -->
+                    <div class="ori-music">
+                        <!-- 胶片背景 -->
+                        <div class="film-bg"></div>
+                        <div class="movie-music">
+                            <div class="ori-title">- 电影原声 -</div>
+                            <div class="music-info">
+                                <p class="music-title">玉子の王様</p>
+                                <p class="music-singer">荒川ケンタウロス</p>
+                                <div class="music-rotate">
+                                    <div class="music-circle"></div>
+                                    <a class="music-poster">
+                                        <img src="../img/music-poster.png">
+                                        <div class="music-play"></div>
+                                    </a>
+                                    <div class="text-bg "></div>
+                                </div>
+                            </div>
+                            <div class="music-bar clearfix">
+                                <div class="fr clearfix">
+                                    <span class="icon-fabu-bar fl"></span>
+                                    <span class="fabu-num fl">18</span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-coll-c fl"></span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-write-bar fl"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 收藏的音乐 -->
+                <div class="ori-movie clearfix">
+                    <!-- 原声音乐 -->
+                    <div class="ori-music">
+                        <!-- 胶片背景 -->
+                        <div class="film-bg"></div>
+                        <div class="movie-music">
+                            <div class="ori-title">- 电影原声 -</div>
+                            <div class="music-info">
+                                <p class="music-title">玉子の王様</p>
+                                <p class="music-singer">荒川ケンタウロス</p>
+                                <div class="music-rotate">
+                                    <div class="music-circle"></div>
+                                    <a class="music-poster">
+                                        <img src="../img/music-poster.png">
+                                        <div class="music-play"></div>
+                                    </a>
+                                    <div class="text-bg "></div>
+                                </div>
+                            </div>
+                            <div class="music-bar clearfix">
+                                <div class="fr clearfix">
+                                    <span class="icon-fabu-bar fl"></span>
+                                    <span class="fabu-num fl">18</span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-coll-c fl"></span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-write-bar fl"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 台词收藏 -->
+            <div v-show="tabChange == 2">
+                <!--收藏台词 -->
+                <div class="sta-lines">
+                    <div>
+                        <!-- 胶片背景 -->
+                        <div class="film-bg"></div>
+                        <!-- 台词内容 -->
+                        <div class="stutra-line">
+                            <div class="ori-title">- 经典台词 -</div>
+                            <div class="line-info">
+                                <a href="#" class="line-text">
+                                    "我们都是神枪手，每一颗子弹消灭一个敌人，我们都是飞行军，哪怕那山高水又深，在密密的树林里，到处都安排同志们和兄弟,每一颗子弹消灭一个敌人,每一颗子弹消灭一个敌人"
+                                </a>
+                                <p class="text-sty none-indent from-my">《明月几时有》</p>
+                            </div>
+                            <div class="music-bar clearfix">
+                                <div class="fr clearfix">
+                                    <span class="icon-fabu-bar fl"></span>
+                                    <span class="fabu-num fl">523</span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-copy-bar fl"></span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-coll-c fl"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- 胶片背景 -->
+                        <div class="film-bg"></div>
+                        <!-- 台词内容 -->
+                        <div class="stutra-line">
+                            <div class="ori-title">- 经典台词 -</div>
+                            <div class="line-info">
+                                <a href="#" class="line-text">
+                                    "在高高的山冈上，有我们无数的好兄弟，没有吃没有穿，自有那敌人送上前，没有枪没有炮，敌人给我们造，我们生长在这里，每一寸土地都是我们自己"
+                                </a>
+                                <p class="text-sty none-indent from-my">《明月几时有》</p>
+                            </div>
+                            <div class="music-bar clearfix">
+                                <div class="fr clearfix">
+                                    <span class="icon-fabu-bar fl"></span>
+                                    <span class="fabu-num fl">1200</span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-copy-bar fl"></span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-coll-c fl"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- 胶片背景 -->
+                        <div class="film-bg"></div>
+                        <!-- 台词内容 -->
+                        <div class="stutra-line">
+                            <div class="ori-title">- 经典台词 -</div>
+                            <div class="line-info">
+                                <a href="#" class="line-text">
+                                    "曾经有一首特别好听的歌摆在我的面前，而我却没有听..."
+                                </a>
+                                <p class="text-sty none-indent from-my">《明月几时有》</p>
+                            </div>
+                            <div class="music-bar clearfix">
+                                <div class="fr clearfix">
+                                    <span class="icon-fabu-bar fl"></span>
+                                    <span class="fabu-num fl">25</span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-copy-bar fl"></span>
+                                    <span class="mask fl">-</span>
+                                    <span class="icon-coll-c fl"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 我赞过的-->
+        <div v-show="myIndex == 2" class="thumbs-wrapper">
+            <div class="play-details">
+
+                <!-- 头部 -->
+                <div class="backHome">
+                    <div class="back-btn"><a @click="backMyList" class="back-bg"></a></div>
+                    <div class="play-title">我赞过的</div>  <!-- {{ movieData.name }} -->
+                </div>
+
+                <!-- Tab切换 -->
+                <div class="collect-tab">
+                    <a @click="tabChange = 0"
+                       :class="tabChange == 0 ? 'tab-list cur-underline' : 'tab-list'">全部</a>
+                    <a @click="tabChange = 1"
+                       :class="tabChange == 1 ? 'tab-list cur-underline' : 'tab-list'">音乐</a>
+                    <a @click="tabChange = 2"
+                       :class="tabChange == 2 ? 'tab-list cur-underline' : 'tab-list'">台词</a>
+                </div>
+
+                <!-- 全部收藏 -->
+                <div v-show="tabChange == 0">
+                    <!-- 电影原声 -->
+                    <div class="ori-movie clearfix">
+                        <!-- 原声音乐 -->
+                        <div class="ori-music">
+                            <!-- 胶片背景 -->
+                            <div class="film-bg"></div>
+                            <div class="movie-music">
+                                <div class="ori-title">- 电影原声 -</div>
+                                <div class="music-info">
+                                    <p class="music-title">玉子の王様</p>
+                                    <p class="music-singer">荒川ケンタウロス</p>
+                                    <div class="music-rotate">
+                                        <div class="music-circle"></div>
+                                        <a class="music-poster">
+                                            <img src="../img/music-poster.png">
+                                            <div class="music-play"></div>
+                                        </a>
+                                        <div class="text-bg "></div>
+                                    </div>
+                                </div>
+                                <div class="music-bar clearfix">
+                                    <div class="fr clearfix">
+                                        <span class="icon-fabu-bar fl"></span>
+                                        <span class="fabu-num fl">18</span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-coll-c fl"></span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-write-bar fl"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 经典台词 -->
+                    <div class="recom-lines">
+                        <!-- 胶片背景 -->
+                        <div class="film-bg"></div>
+                        <div class="ori-title">- 经典台词 -</div>
+                        <div class="recom-text indent-sty">
+                            <p class="text-sty">明月几时有，月如钩，何人相约黄昏后；明月几时有，月当头，何解一段离愁。</p>
+                            <p class="grayColor txt-content">
+                                《明月几时有》电影配乐
+                                <span class="recom-date">2017-05-11</span></p>
+                        </div>
+                        <!-- 胶片背景 -->
+                        <div class="film-bg"></div>
+                    </div>
+                </div>
+
+                <!-- 音乐收藏-->
+                <div v-show="tabChange == 1">
+                    <!-- 收藏的音乐 -->
+                    <div class="ori-movie clearfix">
+                        <!-- 原声音乐 -->
+                        <div class="ori-music">
+                            <!-- 胶片背景 -->
+                            <div class="film-bg"></div>
+                            <div class="movie-music">
+                                <div class="ori-title">- 电影原声 -</div>
+                                <div class="music-info">
+                                    <p class="music-title">玉子の王様</p>
+                                    <p class="music-singer">荒川ケンタウロス</p>
+                                    <div class="music-rotate">
+                                        <div class="music-circle"></div>
+                                        <a class="music-poster">
+                                            <img src="../img/music-poster.png">
+                                            <div class="music-play"></div>
+                                        </a>
+                                        <div class="text-bg "></div>
+                                    </div>
+                                </div>
+                                <div class="music-bar clearfix">
+                                    <div class="fr clearfix">
+                                        <span class="icon-fabu-bar fl"></span>
+                                        <span class="fabu-num fl">18</span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-coll-c fl"></span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-write-bar fl"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 收藏的音乐 -->
+                    <div class="ori-movie clearfix">
+                        <!-- 原声音乐 -->
+                        <div class="ori-music">
+                            <!-- 胶片背景 -->
+                            <div class="film-bg"></div>
+                            <div class="movie-music">
+                                <div class="ori-title">- 电影原声 -</div>
+                                <div class="music-info">
+                                    <p class="music-title">玉子の王様</p>
+                                    <p class="music-singer">荒川ケンタウロス</p>
+                                    <div class="music-rotate">
+                                        <div class="music-circle"></div>
+                                        <a class="music-poster">
+                                            <img src="../img/music-poster.png">
+                                            <div class="music-play"></div>
+                                        </a>
+                                        <div class="text-bg "></div>
+                                    </div>
+                                </div>
+                                <div class="music-bar clearfix">
+                                    <div class="fr clearfix">
+                                        <span class="icon-fabu-bar fl"></span>
+                                        <span class="fabu-num fl">18</span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-coll-c fl"></span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-write-bar fl"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 台词收藏 -->
+                <div v-show="tabChange == 2">
+                    <!--收藏台词 -->
+                    <div class="sta-lines">
+                        <div>
+                            <!-- 胶片背景 -->
+                            <div class="film-bg"></div>
+                            <!-- 台词内容 -->
+                            <div class="stutra-line">
+                                <div class="ori-title">- 经典台词 -</div>
+                                <div class="line-info">
+                                    <a href="#" class="line-text">
+                                        "我们都是神枪手，每一颗子弹消灭一个敌人，我们都是飞行军，哪怕那山高水又深，在密密的树林里，到处都安排同志们和兄弟,每一颗子弹消灭一个敌人,每一颗子弹消灭一个敌人"
+                                    </a>
+                                    <p class="text-sty none-indent from-my">《明月几时有》</p>
+                                </div>
+                                <div class="music-bar clearfix">
+                                    <div class="fr clearfix">
+                                        <span class="icon-fabu-bar fl"></span>
+                                        <span class="fabu-num fl">523</span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-copy-bar fl"></span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-coll-c fl"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- 胶片背景 -->
+                            <div class="film-bg"></div>
+                            <!-- 台词内容 -->
+                            <div class="stutra-line">
+                                <div class="ori-title">- 经典台词 -</div>
+                                <div class="line-info">
+                                    <a href="#" class="line-text">
+                                        "在高高的山冈上，有我们无数的好兄弟，没有吃没有穿，自有那敌人送上前，没有枪没有炮，敌人给我们造，我们生长在这里，每一寸土地都是我们自己"
+                                    </a>
+                                    <p class="text-sty none-indent from-my">《明月几时有》</p>
+                                </div>
+                                <div class="music-bar clearfix">
+                                    <div class="fr clearfix">
+                                        <span class="icon-fabu-bar fl"></span>
+                                        <span class="fabu-num fl">1200</span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-copy-bar fl"></span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-coll-c fl"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- 胶片背景 -->
+                            <div class="film-bg"></div>
+                            <!-- 台词内容 -->
+                            <div class="stutra-line">
+                                <div class="ori-title">- 经典台词 -</div>
+                                <div class="line-info">
+                                    <a href="#" class="line-text">
+                                        "曾经有一首特别好听的歌摆在我的面前，而我却没有听..."
+                                    </a>
+                                    <p class="text-sty none-indent from-my">《明月几时有》</p>
+                                </div>
+                                <div class="music-bar clearfix">
+                                    <div class="fr clearfix">
+                                        <span class="icon-fabu-bar fl"></span>
+                                        <span class="fabu-num fl">25</span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-copy-bar fl"></span>
+                                        <span class="mask fl">-</span>
+                                        <span class="icon-coll-c fl"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- 我评论的-->
+        <div v-show="myIndex == 3" class="ratings-wrapper">
+            <!-- 头部固定 -->
+            <div class="header">
+                <div class="movie-code">
+                    <a class="bg-image back-img" @click="backMyList"></a>
+                </div>
+                <div class="movie-title">
+                    <span>我评论的</span>
+                </div>
+            </div>
+
+            <!-- Tab切换 -->
+            <div class="collect-tab">
+                <a @click="ratSolt = 0"
+                   :class="ratSolt == 0 ? 'tab-list cur-underline' : 'tab-list'">按时间排序</a>
+                <a @click="ratSolt = 1"
+                   :class="ratSolt == 1 ? 'tab-list cur-underline' : 'tab-list'">按获赞排序</a>
+            </div>
+
+            <!-- 按时间排序 -->
+            <div v-show="ratSolt == 0">
+                <!-- 我的评论 -->
+                <div class="user-ratings my-rat">
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <!-- 用户评论 -->
+                    <div class="ratings-info indent-sty">
+                        <div class="rat-title">时间排序</div>
+                        <div class="rat-text">
+                            <a href="javascript:;" class="rat-time">
+                                了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                敷衍了孙悟空的单线。
+                                了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                            </a>
+                        </div>
+                        <div class="rat-bar clearfix">
+                            <div class="fl">
+                                <span class="font40 grayColor">2017-07-09</span>
+                            </div>
+                            <div class="fr">
+                                <span class="icon-fabu-c fl"></span>
+                                <span class="fabu-num fl">525</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 我的评论 -->
+                <div class="user-ratings my-rat">
+                    <div>
+
+                        <!-- 用户评论 -->
+                        <div class="ratings-info indent-sty">
+                            <div class="rat-title">《悟空传》电影原声</div>
+                            <div class="rat-text">
+                                <a href="javascript:;" class="rat-time">
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                    敷衍了孙悟空的单线。
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                </a>
+                            </div>
+                            <div class="rat-bar clearfix">
+                                <div class="fl">
+                                    <span class="font40 grayColor">2017-07-09</span>
+                                </div>
+                                <div class="fr">
+                                    <span class="icon-fabu-c fl"></span>
+                                    <span class="fabu-num fl">525</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- 我的评论 -->
+                <div class="user-ratings my-rat">
+                    <div>
+
+                        <!-- 用户评论 -->
+                        <div class="ratings-info indent-sty">
+                            <div class="rat-title">《悟空传》电影原声</div>
+                            <div class="rat-text">
+                                <a href="javascript:;" class="rat-time">
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                    敷衍了孙悟空的单线。
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                </a>
+                            </div>
+                            <div class="rat-bar clearfix">
+                                <div class="fl">
+                                    <span class="font40 grayColor">2017-07-09</span>
+                                </div>
+                                <div class="fr">
+                                    <span class="icon-fabu-c fl"></span>
+                                    <span class="fabu-num fl">525</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- 我的评论 -->
+                <div class="user-ratings my-rat">
+                    <div>
+
+                        <!-- 用户评论 -->
+                        <div class="ratings-info indent-sty">
+                            <div class="rat-title">《悟空传》电影原声</div>
+                            <div class="rat-text">
+                                <a href="javascript:;" class="rat-time">
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                    敷衍了孙悟空的单线。
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                </a>
+                            </div>
+                            <div class="rat-bar clearfix">
+                                <div class="fl">
+                                    <span class="font40 grayColor">2017-07-09</span>
+                                </div>
+                                <div class="fr">
+                                    <span class="icon-fabu-c fl"></span>
+                                    <span class="fabu-num fl">525</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 按获赞排序 -->
+            <div v-show="ratSolt == 1">
+                <!-- 我的评论 -->
+                <div class="user-ratings my-rat">
+                    <!-- 胶片背景 -->
+                    <div class="film-bg"></div>
+                    <!-- 用户评论 -->
+                    <div class="ratings-info indent-sty">
+                        <div class="rat-title">获赞排序电影原声</div>
+                        <div class="rat-text">
+                            <a href="javascript:;" class="rat-time">
+                                了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                敷衍了孙悟空的单线。
+                                了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                            </a>
+                        </div>
+                        <div class="rat-bar clearfix">
+                            <div class="fl">
+                                <span class="font40 grayColor">2017-07-09</span>
+                            </div>
+                            <div class="fr">
+                                <span class="icon-fabu-c fl"></span>
+                                <span class="fabu-num fl">525</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 我的评论 -->
+                <div class="user-ratings my-rat">
+                    <div>
+
+                        <!-- 用户评论 -->
+                        <div class="ratings-info indent-sty">
+                            <div class="rat-title">《悟空传》电影原声</div>
+                            <div class="rat-text">
+                                <a href="javascript:;" class="rat-time">
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                    敷衍了孙悟空的单线。
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                </a>
+                            </div>
+                            <div class="rat-bar clearfix">
+                                <div class="fl">
+                                    <span class="font40 grayColor">2017-07-09</span>
+                                </div>
+                                <div class="fr">
+                                    <span class="icon-fabu-c fl"></span>
+                                    <span class="fabu-num fl">525</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- 我的评论 -->
+                <div class="user-ratings my-rat">
+                    <div>
+
+                        <!-- 用户评论 -->
+                        <div class="ratings-info indent-sty">
+                            <div class="rat-title">《悟空传》电影原声</div>
+                            <div class="rat-text">
+                                <a href="javascript:;" class="rat-time">
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                    敷衍了孙悟空的单线。
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                </a>
+                            </div>
+                            <div class="rat-bar clearfix">
+                                <div class="fl">
+                                    <span class="font40 grayColor">2017-07-09</span>
+                                </div>
+                                <div class="fr">
+                                    <span class="icon-fabu-c fl"></span>
+                                    <span class="fabu-num fl">525</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- 我的评论 -->
+                <div class="user-ratings my-rat">
+                    <div>
+
+                        <!-- 用户评论 -->
+                        <div class="ratings-info indent-sty">
+                            <div class="rat-title">《悟空传》电影原声</div>
+                            <div class="rat-text">
+                                <a href="javascript:;" class="rat-time">
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                    敷衍了孙悟空的单线。
+                                    了解过原著的肯定失望，没了精神内髓，化成一段感情和大量动作pk，
+                                </a>
+                            </div>
+                            <div class="rat-bar clearfix">
+                                <div class="fl">
+                                    <span class="font40 grayColor">2017-07-09</span>
+                                </div>
+                                <div class="fr">
+                                    <span class="icon-fabu-c fl"></span>
+                                    <span class="fabu-num fl">525</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 我的消息-->
+        <div v-show="myIndex == 4" class="news-wrapper">
+            <!-- 头部 -->
+            <div class="backHome rat-details">
+                <div class="back-btn"><a @click="backMyList" class="back-bg"></a></div>
+                <div class="play-title">我的消息</div>  <!-- {{ movieData.name }} -->
+            </div>
+
+            <div class="play-details">
+                <!-- 评论详情页 -->
+                <div class="lines-tab indent-sty">
+                    <div class="lines-text ">
+
+                        <!-- 评论列表页 -->
+                        <div v-for="rat in movieData.ratings" class="ratings-list">
+                            <div class="user-u change-u clearfix">
+                                <!--  :src="rat.avatar" alt="rat.username" -->
+
+                                <div class="user-info none-ml fl">
+
+                                    <!-- {{ rat.rateTime }} -->
+                                    <span class="rat-date">{{ rat.rateTime }}</span>
+                                </div>
+                            </div>
+                            <div class="rat-text">
+                                <!-- {{ rat.content }} -->
+                                <p class="text-sty change-sty">
+                                    "许鞍华的节奏散漫在这部电影中暴露的一览无余，又不是非常走心能用情感填补的类型。她真的不适合拍这种。演员都有硬伤，周迅的灵与静在里面略显得呆板和笨重，彭于晏中规中矩，霍建华表现略拖后腿，有点小灾难。"</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 关于我们 -->
+        <div v-show="myIndex == 5" class="about-wrapper">
+            <!-- 登录 -->
+            <div class="backHome sign-info">
+                <div class="back-btn"><a @click="backMyList" class="back-bg"></a></div>
+                <div class="play-title">关于幕喵</div>  <!-- {{ movieData.name }} -->
+            </div>
+            <!-- 输入框 -->
+            <div class="sign-in about-mumiao">
+                <div class="movie-log about-miao"></div>
+                <div class="user-name about-mm font60">
+                    幕喵
+                </div>
+                <div class="user-name about-mm font48">
+                    当前版本1.1.2
+                </div>
+                <div class="user-name about-mm font48">
+                    当电影遇上音乐尽在幕喵！
+                </div>
+            </div>
+        </div>
+        <!-- 退出登录 -->
+        <div v-show="myIndex == 6" class="sign-wrapper">
+            <!-- 登录 -->
+            <div class="backHome sign-info">
+                <div class="back-btn"><a @click="backMyList" class="back-bg"></a></div>
+                <div class="play-title">幕喵</div>  <!-- {{ movieData.name }} -->
+            </div>
+            <!-- 输入框 -->
+            <div class="sign-in">
+                <div class="movie-log"></div>
+                <div class="user-name clearfix">
+                    <div class="user-bar fl"></div>
+                    <input class="user-input fl" type="text" placeholder="请输入手机号">
+                </div>
+                <div class="user-name password">
+                    <div class="user-bar pwd-bar fl"></div>
+                    <input class="user-input fl" type="password" placeholder="请输入验证码">
+                </div>
+                <div class="user-name signing-in">
+                    <input class="user-input sign-btn fl" type="button" value="快速登录">
+                </div>
+            </div>
+            <!-- 胶片背景 -->
+            <div class="film-bg">
+                <span class="film-bg-bar">其他登录方式</span>
+            </div>
+            <!-- 第三方登录 -->
+            <div class="relation">
+                <a href="#" class="relation-sign">
+                    <span class="relation-wx"></span>
+                </a>
+                <a href="#" class="relation-sign ">
+                    <span class="relation-qq"></span>
+                </a>
+                <a href="#" class="relation-sign ">
+                    <span class="relation-wb"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部固定 -->
+    <div class="footer">
+        <div class="nav-wrap">
+            <a @click="footerNavIndex = 0">
+                <span :class="footerNavIndex == 0 ? 'home-img changeBg' : 'home-img'"></span><br>
+                <span :class="footerNavIndex == 0 ? 'cur-color' : ''">首页</span>
+            </a>
+            <a @click="footerNavIndex = 1">
+                <span @click="recommend"
+                      :class="footerNavIndex == 1 ? 'collect-img changeBg' : 'collect-img'">
+                </span><br>
+                <span :class="footerNavIndex == 1 ? 'cur-color' : ''">推荐</span>
+            </a>
+            <a @click="footerNavIndex = 2">
+                <span :class="footerNavIndex == 2 ? 'search-img changeBg' : 'search-img'"></span><br>
+                <span :class="footerNavIndex == 2 ? 'cur-color' : ''">搜索</span>
+            </a>
+            <a @click="footerNavIndex = 3">
+                <span :class="footerNavIndex == 3 ? 'main-img changeBg' : 'main-img'"></span><br>
+                <span :class="footerNavIndex == 3 ? 'cur-color' : ''">我的</span>
+            </a>
+        </div>
+    </div>
+
+</div>
+</body>
+<script src="../js/lib/vue.js"></script>
+<script src="../js/lib/less.min.js"></script>
+<script src="../js/lib/vue-router.js"></script>
+<script src="../js/lib/vue-resource.js"></script>
+<script src="../js/lib/clipboard.min.js"></script>
+<script src="../js/main/myVue.js"></script>
+</html>

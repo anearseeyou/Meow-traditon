@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>我的消息</title>
+    <link rel="stylesheet" href="../../../css/reset.css">
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/index.css">
+    <script src="../../../js/lib/fontSize.js"></script>
+</head>
+<body>
+<div id="app">
+    <!-- 头部 -->
+    <div class="backHome rat-details">
+        <div class="back-btn"><a href="../../main.html" class="back-bg"></a></div>
+        <div class="play-title">我的消息</div>  <!-- {{ movieData.name }} -->
+    </div>
+
+    <div class="play-details">
+       <!-- 评论详情页 -->
+        <div class="lines-tab indent-sty">
+            <div class="lines-text ">
+
+                <!-- 评论列表页 -->
+                <div v-for="rat in movieData.ratings" class="ratings-list">
+                    <div class="user-u change-u clearfix">
+                        <!--  :src="rat.avatar" alt="rat.username" -->
+
+                        <div class="user-info none-ml fl">
+
+                            <!-- {{ rat.rateTime }} -->
+                            <span class="rat-date">{{ rat.rateTime }}</span>
+                        </div>
+                    </div>
+                    <div class="rat-text">
+                        <!-- {{ rat.content }} -->
+                        <p class="text-sty change-sty">
+                            "许鞍华的节奏散漫在这部电影中暴露的一览无余，又不是非常走心能用情感填补的类型。她真的不适合拍这种。演员都有硬伤，周迅的灵与静在里面略显得呆板和笨重，彭于晏中规中矩，霍建华表现略拖后腿，有点小灾难。"</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="../../../js/lib/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="../../../js/lib/vue.js"></script>
+<script type="text/javascript" src="../../../js/lib/less.min.js"></script>
+<script type="text/javascript" src="../../../js/lib/vue-router.js"></script>
+<script type="text/javascript" src="../../../js/lib/vue-resource.js"></script>
+<script type="text/javascript" src="../../../js/del/main.js"></script>
+<script>
+
+</script>
+</html>
